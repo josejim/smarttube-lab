@@ -19,9 +19,11 @@ commands cited in each document, and corrections are published with dates.
 
 ## Findings
 
-- [Open-PR overlap map (2026-10-15)](findings/2026-10-overlap-map.md) — triage map of the open PR
-  queue of SmartTube: which PRs collide, which genuinely compete, and which similarity flags are
-  false positives. (49 open PRs → 5 groups; after reading the diffs: 1 genuine duplicate pair.)
+- [Open-PR overlap map (2026-10-15, updated 2026-10-21)](findings/2026-10-overlap-map.md) —
+  triage map of the open PR queue of SmartTube: which PRs collide, which genuinely compete, and
+  which similarity flags are false positives. (49 open PRs → 5 groups; after reading the diffs: 1
+  genuine duplicate pair. The 2026-10-21 update covers 55 open PRs and adds two patterns no
+  similarity score catches: a superseding pair and an already-landed hunk.)
 
 ## Tooling
 
