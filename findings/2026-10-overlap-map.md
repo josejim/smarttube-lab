@@ -103,3 +103,41 @@ for n in <numbers>; do gh pr view $n --repo yuliskov/SmartTube --json number,mer
 `find-dupes` is public: `github.com/josejim/find-dupes`. Its own README carries the lesson this map
 produced: **the script flags, the human decides** — here the human step changed the headline number
 from "22% of the queue is duplicate work" to "one pair, plus a lot of file collision".
+
+---
+
+## Update — 2026-10-21 (seven days on)
+
+Re-measured the queue against the live API and re-read what moved. Raw outputs: same-day runs of
+the commands in the Method section. Nothing below contradicts the map above; one thing it adds is a
+duplicate pattern that no similarity score catches.
+
+**Numbers.** 55 open PRs (was 49), 36 `MERGEABLE` / 19 `CONFLICTING` / 0 `UNKNOWN`, 2 drafts,
+33 with zero comments; 734 open issues, 184 of them with zero comments. Last 30 days: 53 issues
+opened, 17 closed, 9 PRs merged, 1 closed unmerged. Five PRs merged in the seven-day window:
+`#6343`, `#6332` (the Spanish strings PR from this lab), `#6331`, `#6323`, `#6320`.
+
+**New pattern — the superseding pair.** `#6343` (merged 2026-10-20) added one line,
+`"OMX.MS."` to `HW_DECODERS`. Five days later the same author opened `#6344`, which deletes the
+hardware blacklist entirely and decides by `MediaCodecList.isSoftwareOnly()` above API 29 and by
+codec-name prefixes below it. The diff header is the proof they are chained rather than parallel:
+`#6344`'s pre-image blob `472e6a6569` is exactly the blob `#6343` produced.
+
+So "same file + same feature + same author" here means *successor*, not duplicate. A similarity
+flag would be wrong, and Git stays silent because the pair merges cleanly. The signal that works is
+**blob ancestry**: does the newer PR's `index a..b` line start at what the older PR produced?
+
+**New pattern — the already-landed hunk.** `#6341` *Enabling live streams via SABR* (open,
+`MERGEABLE`, 16 files) rewrites the DNS-repair path in `ErrorFixerController`. Master already
+contains that exact version — `40558f97` is both the PR's post-image and master's current blob —
+because commit `bbed8fbb` landed it independently on 2026-10-19. The PR is not wrong and will merge,
+but that hunk is redundant; its live-SABR work in `VideoLoaderController` and six
+`exoplayer-amzn` files is still absent upstream. Practical read for group 4 of this map: a third PR
+now competes for `ErrorFixerController`, and its copy of the file is already master's.
+
+**File overlap, re-measured.** Over all 55 open PRs, 181 pairs share ≥2 files; after dropping locale
+`strings.xml`, markdown, gradle and manifest files, 301 pairs still share ≥1 code file. The top
+pairs are not duplicate work — `#5495`/`#6334` share 47 paths only because both add strings to 46
+locales. The published conclusion gets stronger with the larger sample: **file overlap is a poor
+duplicate signal in this repo.** The two signals that survive are identical *new* file paths
+(`#5817`/`#6265`) and blob ancestry (`#6343`/`#6344`).
